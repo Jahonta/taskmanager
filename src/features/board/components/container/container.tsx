@@ -10,7 +10,7 @@ function Container() {
 
       <TaskList />
 
-      <Button extraClass='load-more' onClick={() => {}}>
+      <Button extraClasses={['load-more']} onClick={() => {}}>
         load more
       </Button>
     </section>

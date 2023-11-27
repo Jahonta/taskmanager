@@ -2,17 +2,17 @@ type ButtonProps = {
   onClick: () => void;
   children: React.ReactNode;
   type?: 'button' | 'submit' | 'reset';
-  extraClass?: string;
+  extraClasses?: string[];
 };
 
 function Button({
   onClick,
   children,
   type = 'button',
-  extraClass,
+  extraClasses = [],
 }: ButtonProps) {
   return (
-    <button className={extraClass} type={type} onClick={onClick}>
+    <button className={extraClasses.join(' ')} type={type} onClick={onClick}>
       {children}
     </button>
   );
