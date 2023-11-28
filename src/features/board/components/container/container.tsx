@@ -1,7 +1,7 @@
+import { Button } from '@taskmanager/components';
+
 import { Sorting } from '../sorting/sorting';
 import { TaskList } from '../task-list/task-list';
-
-import { Button } from '@components';
 
 function Container() {
   return (

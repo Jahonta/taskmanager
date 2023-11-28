@@ -1,5 +1,6 @@
+import { Button } from '@taskmanager/components';
+
 import { Header } from '../header/header';
-import { Button } from '@components';
 
 function Container() {
   return (
