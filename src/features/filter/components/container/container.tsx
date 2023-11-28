@@ -1,63 +1,48 @@
+import { useState } from 'react';
+import { FilterItem } from '../filter-item/filter-item';
+
+const filters = [
+  {
+    name: 'all',
+    count: 13,
+  },
+  {
+    name: 'overdue',
+    count: 0,
+  },
+  {
+    name: 'today',
+    count: 0,
+  },
+  {
+    name: 'repeating',
+    count: 0,
+  },
+  {
+    name: 'favorites',
+    count: 0,
+  },
+  {
+    name: 'archive',
+    count: 1
+  },
+];
+
 function Container() {
+  const [activeFilter, setActiveFilter] = useState(filters[0].name);
+
   return (
     <section className='main__filter filter container'>
-      <input
-        type='radio'
-        id='filter__all'
-        className='filter__input visually-hidden'
-        name='filter'
-        checked
-      />
-      <label htmlFor='filter__all' className='filter__label'>
-        All <span className='filter__all-count'>13</span>
-      </label>
-      <input
-        type='radio'
-        id='filter__overdue'
-        className='filter__input visually-hidden'
-        name='filter'
-        disabled
-      />
-      <label htmlFor='filter__overdue' className='filter__label'>
-        Overdue <span className='filter__overdue-count'>0</span>
-      </label>
-      <input
-        type='radio'
-        id='filter__today'
-        className='filter__input visually-hidden'
-        name='filter'
-        disabled
-      />
-      <label htmlFor='filter__today' className='filter__label'>
-        Today <span className='filter__today-count'>0</span>
-      </label>
-      <input
-        type='radio'
-        id='filter__favorites'
-        className='filter__input visually-hidden'
-        name='filter'
-      />
-      <label htmlFor='filter__favorites' className='filter__label'>
-        Favorites <span className='filter__favorites-count'>1</span>
-      </label>
-      <input
-        type='radio'
-        id='filter__repeating'
-        className='filter__input visually-hidden'
-        name='filter'
-      />
-      <label htmlFor='filter__repeating' className='filter__label'>
-        Repeating <span className='filter__repeating-count'>1</span>
-      </label>
-      <input
-        type='radio'
-        id='filter__archive'
-        className='filter__input visually-hidden'
-        name='filter'
-      />
-      <label htmlFor='filter__archive' className='filter__label'>
-        Archive <span className='filter__archive-count'>115</span>
-      </label>
+      {filters.map(({ name, count }) => (
+        <FilterItem
+          key={name}
+          name={name}
+          count={count}
+          onChange={() => setActiveFilter(name)}
+          checked={activeFilter === name}
+          disabled={count === 0}
+        />
+      ))}
     </section>
   );
 }
