@@ -1,3 +1,5 @@
+import cn from 'classnames';
+
 type ButtonProps = {
   onClick: () => void;
   children: React.ReactNode;
@@ -12,7 +14,7 @@ function Button({
   extraClasses = [],
 }: ButtonProps) {
   return (
-    <button className={extraClasses.join(' ')} type={type} onClick={onClick}>
+    <button className={cn(extraClasses)} type={type} onClick={onClick}>
       {children}
     </button>
   );
