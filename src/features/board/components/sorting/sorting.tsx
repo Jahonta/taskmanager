@@ -1,15 +1,23 @@
+import { useState } from 'react';
+
+import { DEFAULT_SORTING } from '../../constants';
+import { SortingType, TSorting } from '../../types/sorting';
+
+import { SortingItem } from '../sorting-item/sorting-item';
+
 function Sorting() {
+  const [activeSorting, setActiveSorting] = useState<TSorting>(DEFAULT_SORTING);
+
   return (
     <div className='board__sort-list'>
-      <a href='#' className='board__sort-item'>
-        SORT BY DEFAULT
-      </a>
-      <a href='#' className='board__sort-item'>
-        SORT BY DATE up
-      </a>
-      <a href='#' className='board__sort-item'>
-        SORT BY DATE down
-      </a>
+      {Object.values(SortingType).map((type) => (
+        <SortingItem
+          key={type}
+          type={type}
+          isActive={activeSorting === type}
+          onClick={setActiveSorting}
+        />
+      ))}
     </div>
   );
 }
