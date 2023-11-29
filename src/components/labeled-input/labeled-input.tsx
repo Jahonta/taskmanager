@@ -4,8 +4,8 @@ type LabeledInputProps = {
   type: 'radio' | 'checkbox';
   name: string;
   value: string;
-  children: React.ReactNode;
-  onChange: (value: string) => void;
+  onChange: (value: string, isChecked: boolean) => void;
+  children?: React.ReactNode;
   inputExtraClasses?: string[];
   labelExtraClasses?: string[];
   checked?: boolean;
@@ -34,7 +34,7 @@ function LabeledInput({
         value={value}
         disabled={disabled}
         checked={checked}
-        onChange={() => onChange(value)}
+        onChange={(event) => onChange(value, event.target.checked)}
       />
       <label htmlFor={id} className={cn(labelExtraClasses)}>
         {children}
