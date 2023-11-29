@@ -1,19 +1,12 @@
+import { RepeatingDay } from './repeating-days';
 import { Color } from './color';
 
 export type Task = {
   id: string;
   color: Color;
   description: string;
-  dueDate: string;
+  dueDate: string | null;
   isArchived: boolean;
   isFavorite: boolean;
-  repeatingDays: {
-    mo: boolean;
-    tu: boolean;
-    we: boolean;
-    th: boolean;
-    fr: boolean;
-    sa: boolean;
-    su: boolean;
-  };
+  repeatingDays: Record<RepeatingDay, boolean>;
 };

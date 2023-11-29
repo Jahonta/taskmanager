@@ -1,5 +1,16 @@
-import { FormEvent } from 'react';
+import { FormEvent, useState } from 'react';
+import cn from 'classnames';
+
 import { Task } from '@taskmanager/types';
+import { Button } from '@taskmanager/components';
+
+import {
+  getEmptyRepeatingDays,
+  isRepeating as helperIsRepeating,
+} from '../../helpers/task';
+
+import { ColorsContainer } from '../colors-container/colors-container';
+import { RepeatContainer } from '../repeat-container/repeat-container';
 
 type TaskFormProps = {
   task: Task;
@@ -7,16 +18,46 @@ type TaskFormProps = {
 };
 
 function TaskForm({ task, onSubmit }: TaskFormProps) {
-  const { color, description, dueDate, repeatingDays, isArchived, isFavorite } =
-    task;
+  const [color, setColor] = useState(task.color);
+  const [description, setDescription] = useState(task.description);
+  const [dueDate, setDueDate] = useState(task.dueDate);
+  const [repeatingDays, setRepeatingDays] = useState(task.repeatingDays);
+  const [hasDueDate, setHasDueDate] = useState(Boolean(dueDate));
+  const [isRepeating, setIsRepeating] = useState(
+    helperIsRepeating(repeatingDays)
+  );
+
+  const handleDueDateToggle = () => {
+    if (!hasDueDate) {
+      setIsRepeating(false);
+    }
+    setHasDueDate((prevHasDueDate) => !prevHasDueDate);
+  };
+
+  const handleRepeatingToggle = () => {
+    if (!isRepeating) {
+      setHasDueDate(false);
+    }
+    setIsRepeating((prevIsRepeating) => !prevIsRepeating);
+  };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onSubmit(task);
+    onSubmit({
+      ...task,
+      color,
+      description,
+      dueDate: hasDueDate ? dueDate : null,
+      repeatingDays: isRepeating ? repeatingDays : getEmptyRepeatingDays(),
+    });
   };
 
   return (
-    <article className='card card--edit card--yellow card--repeat'>
+    <article
+      className={cn('card', 'card--edit', `card--${color}`, {
+        'card--repeat': isRepeating,
+      })}
+    >
       <form
         className='card__form'
         method='get'
@@ -36,196 +77,77 @@ function TaskForm({ task, onSubmit }: TaskFormProps) {
                 className='card__text'
                 placeholder='Start typing your text here...'
                 name='text'
-              >
-                This is example of task edit. You can set date and chose
-                repeating days and color.
-              </textarea>
+                value={description}
+                onChange={(event) => setDescription(event.target.value)}
+              />
             </label>
           </div>
 
           <div className='card__settings'>
             <div className='card__details'>
               <div className='card__dates'>
-                <button className='card__date-deadline-toggle' type='button'>
-                  date: <span className='card__date-status'>yes</span>
-                </button>
+                <Button
+                  extraClasses={['card__date-deadline-toggle']}
+                  onClick={handleDueDateToggle}
+                >
+                  date:{' '}
+                  <span className='card__date-status'>
+                    {hasDueDate ? 'yes' : 'no'}
+                  </span>
+                </Button>
 
-                <fieldset className='card__date-deadline'>
+                <fieldset
+                  className='card__date-deadline'
+                  disabled={!hasDueDate || isRepeating}
+                >
                   <label className='card__input-deadline-wrap'>
                     <input
                       className='card__date'
                       type='text'
                       placeholder=''
                       name='date'
-                      value='23 September 16:15'
+                      value={dueDate ?? ''}
+                      onChange={(event) => setDueDate(event.target.value)}
                     />
                   </label>
                 </fieldset>
 
-                <button className='card__repeat-toggle' type='button'>
-                  repeat:<span className='card__repeat-status'>yes</span>
-                </button>
+                <Button
+                  extraClasses={['card__repeat-toggle']}
+                  onClick={handleRepeatingToggle}
+                >
+                  repeat:
+                  <span className='card__repeat-status'>
+                    {isRepeating ? 'yes' : 'no'}
+                  </span>
+                </Button>
 
-                <fieldset className='card__repeat-days'>
-                  <div className='card__repeat-days-inner'>
-                    <input
-                      className='visually-hidden card__repeat-day-input'
-                      type='checkbox'
-                      id='repeat-mo-4'
-                      name='repeat'
-                      value='mo'
-                    />
-                    <label className='card__repeat-day' htmlFor='repeat-mo-4'>
-                      mo
-                    </label>
-                    <input
-                      className='visually-hidden card__repeat-day-input'
-                      type='checkbox'
-                      id='repeat-tu-4'
-                      name='repeat'
-                      value='tu'
-                      checked
-                    />
-                    <label className='card__repeat-day' htmlFor='repeat-tu-4'>
-                      tu
-                    </label>
-                    <input
-                      className='visually-hidden card__repeat-day-input'
-                      type='checkbox'
-                      id='repeat-we-4'
-                      name='repeat'
-                      value='we'
-                    />
-                    <label className='card__repeat-day' htmlFor='repeat-we-4'>
-                      we
-                    </label>
-                    <input
-                      className='visually-hidden card__repeat-day-input'
-                      type='checkbox'
-                      id='repeat-th-4'
-                      name='repeat'
-                      value='th'
-                    />
-                    <label className='card__repeat-day' htmlFor='repeat-th-4'>
-                      th
-                    </label>
-                    <input
-                      className='visually-hidden card__repeat-day-input'
-                      type='checkbox'
-                      id='repeat-fr-4'
-                      name='repeat'
-                      value='fr'
-                      checked
-                    />
-                    <label className='card__repeat-day' htmlFor='repeat-fr-4'>
-                      fr
-                    </label>
-                    <input
-                      className='visually-hidden card__repeat-day-input'
-                      type='checkbox'
-                      name='repeat'
-                      value='sa'
-                      id='repeat-sa-4'
-                    />
-                    <label className='card__repeat-day' htmlFor='repeat-sa-4'>
-                      sa
-                    </label>
-                    <input
-                      className='visually-hidden card__repeat-day-input'
-                      type='checkbox'
-                      id='repeat-su-4'
-                      name='repeat'
-                      value='su'
-                      checked
-                    />
-                    <label className='card__repeat-day' htmlFor='repeat-su-4'>
-                      su
-                    </label>
-                  </div>
+                <fieldset
+                  className='card__repeat-days'
+                  disabled={!isRepeating || hasDueDate}
+                >
+                  <RepeatContainer
+                    onChange={setRepeatingDays}
+                    currentRepeatingDays={repeatingDays}
+                  />
                 </fieldset>
               </div>
             </div>
 
-            <div className='card__colors-inner'>
-              <h3 className='card__colors-title'>Color</h3>
-              <div className='card__colors-wrap'>
-                <input
-                  type='radio'
-                  id='color-black-4'
-                  className='card__color-input card__color-input--black visually-hidden'
-                  name='color'
-                  value='black'
-                />
-                <label
-                  htmlFor='color-black-4'
-                  className='card__color card__color--black'
-                >
-                  black
-                </label>
-                <input
-                  type='radio'
-                  id='color-yellow-4'
-                  className='card__color-input card__color-input--yellow visually-hidden'
-                  name='color'
-                  value='yellow'
-                  checked
-                />
-                <label
-                  htmlFor='color-yellow-4'
-                  className='card__color card__color--yellow'
-                >
-                  yellow
-                </label>
-                <input
-                  type='radio'
-                  id='color-blue-4'
-                  className='card__color-input card__color-input--blue visually-hidden'
-                  name='color'
-                  value='blue'
-                />
-                <label
-                  htmlFor='color-blue-4'
-                  className='card__color card__color--blue'
-                >
-                  blue
-                </label>
-                <input
-                  type='radio'
-                  id='color-green-4'
-                  className='card__color-input card__color-input--green visually-hidden'
-                  name='color'
-                  value='green'
-                />
-                <label
-                  htmlFor='color-green-4'
-                  className='card__color card__color--green'
-                >
-                  green
-                </label>
-                <input
-                  type='radio'
-                  id='color-pink-4'
-                  className='card__color-input card__color-input--pink visually-hidden'
-                  name='color'
-                  value='pink'
-                />
-                <label
-                  htmlFor='color-pink-4'
-                  className='card__color card__color--pink'
-                >
-                  pink
-                </label>
-              </div>
-            </div>
+            <ColorsContainer onChange={setColor} currentColor={color} />
           </div>
 
           <div className='card__status-btns'>
-            <button className='card__save' type='submit'>
+            <Button
+              extraClasses={['card__save']}
+              type='submit'
+              onClick={() => {}}
+            >
               save
-            </button>
-            <button className='card__delete' type='button'>
+            </Button>
+            <Button extraClasses={['card__delete']} onClick={() => {}}>
               delete
-            </button>
+            </Button>
           </div>
         </div>
       </form>

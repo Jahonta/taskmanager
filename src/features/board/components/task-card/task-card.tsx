@@ -8,9 +8,10 @@ import { formatCardDate } from '../../helpers/format';
 
 type TaskCardProps = {
   task: Task;
+  onEditClick: () => void;
 };
 
-function TaskCard({ task }: TaskCardProps) {
+function TaskCard({ task, onEditClick }: TaskCardProps) {
   const { color, description, dueDate, isArchived, isFavorite, repeatingDays } =
     task;
 
@@ -26,7 +27,7 @@ function TaskCard({ task }: TaskCardProps) {
           <div className='card__control'>
             <Button
               extraClasses={['card__btn', 'card__btn--edit']}
-              onClick={() => {}}
+              onClick={onEditClick}
             >
               edit
             </Button>
