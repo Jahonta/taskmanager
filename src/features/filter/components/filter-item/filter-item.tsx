@@ -1,4 +1,4 @@
-import { LabeledInput } from 'components/labeled-input/labeled-input';
+import { LabeledInput } from '@taskmanager/components';
 
 type FilterItemProps = {
   name: string;
