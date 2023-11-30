@@ -13,11 +13,12 @@ import { ColorsContainer } from '../colors-container/colors-container';
 import { RepeatingContainer } from '../repeating-container/repeating-container';
 
 type TaskFormProps = {
-  task: Task;
-  onSubmit: (task: Task) => void;
+  task: Task | Omit<Task, 'id'>;
+  onSubmit: (task: Task | Omit<Task, 'id'>) => void;
+  isCreating: boolean;
 };
 
-function TaskForm({ task, onSubmit }: TaskFormProps) {
+function TaskForm({ task, onSubmit, isCreating = false }: TaskFormProps) {
   const [color, setColor] = useState(task.color);
   const [description, setDescription] = useState(task.description);
   const [dueDate, setDueDate] = useState(task.dueDate);
@@ -142,7 +143,7 @@ function TaskForm({ task, onSubmit }: TaskFormProps) {
               save
             </Button>
             <Button extraClasses={['card__delete']} onClick={() => {}}>
-              delete
+              {isCreating ? 'cancel' : 'delete'}
             </Button>
           </div>
         </div>

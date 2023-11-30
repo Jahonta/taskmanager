@@ -1,4 +1,4 @@
-import { RepeatingDays, Task } from '@taskmanager/types';
+import { Colors, RepeatingDays, Task } from '@taskmanager/types';
 
 export function isOverdue(dueDate: Task['dueDate']) {
   return dueDate && new Date(dueDate).getTime() < new Date().getTime();
@@ -13,4 +13,15 @@ export function getEmptyRepeatingDays() {
     acc[curr] = false;
     return acc;
   }, {});
+}
+
+export function getEmptyTask() {
+  return {
+    color: Colors[0],
+    description: '',
+    dueDate: null,
+    isArchived: false,
+    isFavorite: false,
+    repeatingDays: getEmptyRepeatingDays(),
+  };
 }

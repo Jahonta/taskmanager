@@ -1,1 +1,1 @@
-export { Container as Control } from './components/container/container';
+export { ControlContainer as Control } from './components/control-container/control-container';
