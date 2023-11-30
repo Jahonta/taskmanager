@@ -138,11 +138,7 @@ function TaskForm({ task, onSubmit }: TaskFormProps) {
           </div>
 
           <div className='card__status-btns'>
-            <Button
-              extraClasses={['card__save']}
-              type='submit'
-              onClick={() => {}}
-            >
+            <Button extraClasses={['card__save']} type='submit'>
               save
             </Button>
             <Button extraClasses={['card__delete']} onClick={() => {}}>

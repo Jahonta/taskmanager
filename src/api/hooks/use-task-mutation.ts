@@ -6,7 +6,7 @@ import { addTask, deleteTask, updateTask } from '../task-fetchers';
 
 type Action = 'add' | 'update' | 'delete';
 
-const mutationFn: Record<Action, (task: Task) => Promise<Task>> = {
+const mutationFn: Record<Action, (task: Task) => Promise<Task | void>> = {
   add: (task: Task) => addTask(task),
   update: (task: Task) => updateTask(task),
   delete: (task: Task) => deleteTask(task),

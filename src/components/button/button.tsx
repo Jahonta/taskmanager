@@ -1,8 +1,8 @@
 import cn from 'classnames';
 
 type ButtonProps = {
-  onClick: () => void;
-  children: React.ReactNode;
+  onClick?: () => void;
+  children?: React.ReactNode;
   type?: 'button' | 'submit' | 'reset';
   extraClasses?: string[];
 };

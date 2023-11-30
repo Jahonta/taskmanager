@@ -1,19 +1,11 @@
-import { Color } from '@taskmanager/types';
+import { Color, RepeatingDay } from '@taskmanager/types';
 
 export type ServerTask = {
   id: string;
   color: Color;
   description: string;
-  due_date: string;
+  due_date: string | null;
   is_archived: boolean;
   is_favorite: boolean;
-  repeating_days: {
-    mo: boolean;
-    tu: boolean;
-    we: boolean;
-    th: boolean;
-    fr: boolean;
-    sa: boolean;
-    su: boolean;
-  };
+  repeating_days: Record<RepeatingDay, boolean>;
 };
