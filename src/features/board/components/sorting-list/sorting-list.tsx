@@ -5,7 +5,7 @@ import { SortingType, TSorting } from '../../types/sorting';
 
 import { SortingItem } from '../sorting-item/sorting-item';
 
-function Sorting() {
+function SortingList() {
   const [activeSorting, setActiveSorting] = useState<TSorting>(DEFAULT_SORTING);
 
   return (
@@ -22,4 +22,4 @@ function Sorting() {
   );
 }
 
-export { Sorting };
+export { SortingList };

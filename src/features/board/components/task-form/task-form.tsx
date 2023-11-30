@@ -10,7 +10,7 @@ import {
 } from '../../helpers/task';
 
 import { ColorsContainer } from '../colors-container/colors-container';
-import { RepeatContainer } from '../repeat-container/repeat-container';
+import { RepeatingContainer } from '../repeating-container/repeating-container';
 
 type TaskFormProps = {
   task: Task;
@@ -126,7 +126,7 @@ function TaskForm({ task, onSubmit }: TaskFormProps) {
                   className='card__repeat-days'
                   disabled={!isRepeating || hasDueDate}
                 >
-                  <RepeatContainer
+                  <RepeatingContainer
                     onChange={setRepeatingDays}
                     currentRepeatingDays={repeatingDays}
                   />

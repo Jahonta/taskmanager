@@ -2,15 +2,15 @@ import { RepeatingDay, RepeatingDays, Task } from '@taskmanager/types';
 
 import { RepeatingItem } from '../repeating-item/repeating-item';
 
-type RepeatContainerProps = {
+type RepeatingContainerProps = {
   onChange: (repeatingDays: Task['repeatingDays']) => void;
   currentRepeatingDays: Task['repeatingDays'];
 };
 
-function RepeatContainer({
+function RepeatingContainer({
   onChange,
   currentRepeatingDays,
-}: RepeatContainerProps) {
+}: RepeatingContainerProps) {
   const handleChange = (day: RepeatingDay, isChecked: boolean) => {
     onChange({
       ...currentRepeatingDays,
@@ -27,4 +27,4 @@ function RepeatContainer({
   );
 }
 
-export { RepeatContainer };
+export { RepeatingContainer };

@@ -1,12 +1,12 @@
 import { Button } from '@taskmanager/components';
 
-import { Sorting } from '../sorting/sorting';
+import { SortingList } from '../sorting-list/sorting-list';
 import { TaskList } from '../task-list/task-list';
 
-function Container() {
+function BoardContainer() {
   return (
     <section className='board container'>
-      <Sorting />
+      <SortingList />
 
       <TaskList />
 
@@ -17,4 +17,4 @@ function Container() {
   );
 }
 
-export { Container };
+export { BoardContainer };
