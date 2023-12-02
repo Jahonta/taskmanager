@@ -4,7 +4,9 @@ import { Task } from '@taskmanager/types';
 import { Button } from '@taskmanager/components';
 import { useTasks } from '@taskmanager/api';
 
-import { TASKS_PER_PORTION } from '../../constants';
+import { DEFAULT_SORTING, TASKS_PER_PORTION } from '../../constants';
+import { Sorting } from '../../types/sorting';
+import { sort } from '../../helpers/sorting';
 
 import { SortingList } from '../sorting-list/sorting-list';
 import { TaskList } from '../task-list/task-list';
@@ -22,16 +24,19 @@ function BoardContainer({
 }: BoardContainerProps) {
   const { data } = useTasks();
   const [renderedTaskCount, setRenderedTaskCount] = useState(0);
+  const [activeSorting, setActiveSorting] = useState<Sorting>(DEFAULT_SORTING);
 
   useEffect(() => {
     if (data) {
       setRenderedTaskCount(Math.min(TASKS_PER_PORTION, data.length));
     }
-  }, [data]);
+  }, [data, activeSorting]);
 
   if (!data) {
     return null;
   }
+
+  const sortedData = sort[activeSorting](data);
 
   const handleLoadMoreClick = () => {
     setRenderedTaskCount((prevRenderedTaskCount) =>
@@ -41,10 +46,13 @@ function BoardContainer({
 
   return (
     <section className='board container'>
-      <SortingList />
+      <SortingList
+        activeSorting={activeSorting}
+        setActiveSorting={setActiveSorting}
+      />
 
       <TaskList
-        tasks={data.slice(0, renderedTaskCount)}
+        tasks={sortedData.slice(0, renderedTaskCount)}
         isCreating={isCreating}
         editingId={editingId}
         onEditClick={onEditClick}

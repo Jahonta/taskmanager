@@ -4,4 +4,4 @@ export const SortingType = {
   DATE_DOWN: 'DATE_DOWN',
 } as const;
 
-export type TSorting = keyof typeof SortingType;
+export type Sorting = keyof typeof SortingType;

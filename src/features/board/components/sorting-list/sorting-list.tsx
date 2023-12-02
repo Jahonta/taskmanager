@@ -1,13 +1,13 @@
-import { useState } from 'react';
-
-import { DEFAULT_SORTING } from '../../constants';
-import { SortingType, TSorting } from '../../types/sorting';
+import { SortingType, Sorting } from '../../types/sorting';
 
 import { SortingItem } from '../sorting-item/sorting-item';
 
-function SortingList() {
-  const [activeSorting, setActiveSorting] = useState<TSorting>(DEFAULT_SORTING);
+type SortingListProps = {
+  activeSorting: Sorting;
+  setActiveSorting: (type: Sorting) => void;
+};
 
+function SortingList({ activeSorting, setActiveSorting }: SortingListProps) {
   return (
     <div className='board__sort-list'>
       {Object.values(SortingType).map((type) => (
