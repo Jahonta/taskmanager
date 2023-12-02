@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { Task } from '@taskmanager/types';
+import { Filter, Task } from '@taskmanager/types';
 import { Button } from '@taskmanager/components';
-import { useTasks } from '@taskmanager/api';
 
 import { DEFAULT_SORTING, TASKS_PER_PORTION } from '../../constants';
 import { Sorting } from '../../types/sorting';
@@ -12,35 +11,36 @@ import { SortingList } from '../sorting-list/sorting-list';
 import { TaskList } from '../task-list/task-list';
 
 type BoardContainerProps = {
+  tasks: Task[];
   isCreating: boolean;
   editingId: Task['id'] | null;
   onEditClick: (id: Task['id'] | null) => void;
+  activeFilter: Filter;
 };
 
 function BoardContainer({
+  tasks,
   isCreating,
   editingId,
   onEditClick,
+  activeFilter,
 }: BoardContainerProps) {
-  const { data } = useTasks();
   const [renderedTaskCount, setRenderedTaskCount] = useState(0);
   const [activeSorting, setActiveSorting] = useState<Sorting>(DEFAULT_SORTING);
 
   useEffect(() => {
-    if (data) {
-      setRenderedTaskCount(Math.min(TASKS_PER_PORTION, data.length));
-    }
-  }, [data, activeSorting]);
+    setActiveSorting(DEFAULT_SORTING);
+  }, [activeFilter]);
 
-  if (!data) {
-    return null;
-  }
+  useEffect(() => {
+    setRenderedTaskCount(Math.min(TASKS_PER_PORTION, tasks.length));
+  }, [tasks, activeSorting]);
 
-  const sortedData = sort[activeSorting](data);
+  const sortedData = sort[activeSorting](tasks);
 
   const handleLoadMoreClick = () => {
     setRenderedTaskCount((prevRenderedTaskCount) =>
-      Math.min(prevRenderedTaskCount + TASKS_PER_PORTION, data.length)
+      Math.min(prevRenderedTaskCount + TASKS_PER_PORTION, tasks.length)
     );
   };
 
@@ -58,7 +58,7 @@ function BoardContainer({
         onEditClick={onEditClick}
       />
 
-      {data.length > renderedTaskCount && (
+      {tasks.length > renderedTaskCount && (
         <Button extraClasses={['load-more']} onClick={handleLoadMoreClick}>
           load more
         </Button>

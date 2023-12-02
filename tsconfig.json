@@ -11,7 +11,8 @@
       "@taskmanager/components": ["components"],
       "@taskmanager/types": ["types"],
       "@taskmanager/api": ["api"],
-      "@taskmanager/hooks": ["hooks"]
+      "@taskmanager/hooks": ["hooks"],
+      "@taskmanager/helpers": ["helpers"]
     },
 
     /* Bundler mode */

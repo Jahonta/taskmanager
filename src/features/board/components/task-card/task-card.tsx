@@ -2,8 +2,8 @@ import cn from 'classnames';
 
 import { Button } from '@taskmanager/components';
 import { Task } from '@taskmanager/types';
+import { isOverdue, isRepeating } from '@taskmanager/helpers';
 
-import { isOverdue, isRepeating } from '../../helpers/task';
 import { formatCardDate } from '../../helpers/format';
 
 type TaskCardProps = {
