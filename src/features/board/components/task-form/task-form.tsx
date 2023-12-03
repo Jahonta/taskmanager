@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, useRef } from 'react';
 import cn from 'classnames';
 
 import { Task } from '@taskmanager/types';
@@ -7,6 +7,9 @@ import {
   getEmptyRepeatingDays,
   isRepeating as helperIsRepeating,
 } from '@taskmanager/helpers';
+import { useDatepicker } from '@taskmanager/hooks';
+
+import { formatCardDate } from '../../helpers/format';
 
 import { ColorsContainer } from '../colors-container/colors-container';
 import { RepeatingContainer } from '../repeating-container/repeating-container';
@@ -26,6 +29,13 @@ function TaskForm({ task, onSubmit, isCreating = false }: TaskFormProps) {
   const [isRepeating, setIsRepeating] = useState(
     helperIsRepeating(repeatingDays)
   );
+  const dateRef = useRef<HTMLInputElement>(null);
+  useDatepicker({
+    dateRef,
+    defaultDate: dueDate,
+    condition: hasDueDate,
+    onClose: setDueDate,
+  });
 
   const handleDueDateToggle = () => {
     if (!hasDueDate) {
@@ -106,8 +116,8 @@ function TaskForm({ task, onSubmit, isCreating = false }: TaskFormProps) {
                       type='text'
                       placeholder=''
                       name='date'
-                      value={dueDate ?? ''}
-                      onChange={(event) => setDueDate(event.target.value)}
+                      defaultValue={formatCardDate(dueDate)}
+                      ref={dateRef}
                     />
                   </label>
                 </fieldset>
