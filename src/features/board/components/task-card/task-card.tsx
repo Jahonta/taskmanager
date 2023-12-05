@@ -9,9 +9,10 @@ import { formatCardDate } from '../../helpers/format';
 type TaskCardProps = {
   task: Task;
   onEditClick: () => void;
+  onUpdate: (task: Task) => void;
 };
 
-function TaskCard({ task, onEditClick }: TaskCardProps) {
+function TaskCard({ task, onEditClick, onUpdate }: TaskCardProps) {
   const { color, description, dueDate, isArchived, isFavorite, repeatingDays } =
     task;
 
@@ -35,7 +36,9 @@ function TaskCard({ task, onEditClick }: TaskCardProps) {
               extraClasses={cn('card__btn', 'card__btn--archive', {
                 'card__btn--disabled': isArchived,
               }).split(' ')}
-              onClick={() => {}}
+              onClick={() => {
+                onUpdate({ ...task, isArchived: !isArchived });
+              }}
             >
               archive
             </Button>
@@ -43,7 +46,9 @@ function TaskCard({ task, onEditClick }: TaskCardProps) {
               extraClasses={cn('card__btn', 'card__btn--favorites', {
                 'card__btn--disabled': isFavorite,
               }).split(' ')}
-              onClick={() => {}}
+              onClick={() => {
+                onUpdate({ ...task, isFavorite: !isFavorite });
+              }}
             >
               favorites
             </Button>

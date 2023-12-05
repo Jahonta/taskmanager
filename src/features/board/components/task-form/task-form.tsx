@@ -14,13 +14,21 @@ import { formatCardDate } from '../../helpers/format';
 import { ColorsContainer } from '../colors-container/colors-container';
 import { RepeatingContainer } from '../repeating-container/repeating-container';
 
-type TaskFormProps = {
-  task: Task | Omit<Task, 'id'>;
-  onSubmit: (task: Task | Omit<Task, 'id'>) => void;
+type SomeTask = Task | Omit<Task, 'id'>;
+
+type TaskFormProps<T> = {
+  task: T;
+  onSubmit: (task: T) => void;
+  onDelete: () => void;
   isCreating: boolean;
 };
 
-function TaskForm({ task, onSubmit, isCreating = false }: TaskFormProps) {
+function TaskForm<T extends SomeTask>({
+  task,
+  onSubmit,
+  onDelete,
+  isCreating = false,
+}: TaskFormProps<T>) {
   const [color, setColor] = useState(task.color);
   const [description, setDescription] = useState(task.description);
   const [dueDate, setDueDate] = useState(task.dueDate);
@@ -151,7 +159,7 @@ function TaskForm({ task, onSubmit, isCreating = false }: TaskFormProps) {
             <Button extraClasses={['card__save']} type='submit'>
               save
             </Button>
-            <Button extraClasses={['card__delete']} onClick={() => {}}>
+            <Button extraClasses={['card__delete']} onClick={onDelete}>
               {isCreating ? 'cancel' : 'delete'}
             </Button>
           </div>

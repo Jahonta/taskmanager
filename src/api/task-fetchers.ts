@@ -26,7 +26,7 @@ function updateTask(task: Task): Promise<Task> {
   });
 }
 
-function deleteTask(task: Task): Promise<void> {
+function deleteTask(task: Task): Promise<Task> {
   return request({ method: 'DELETE', id: task.id });
 }
 

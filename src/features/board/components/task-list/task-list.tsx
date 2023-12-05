@@ -1,12 +1,15 @@
 import { Task } from '@taskmanager/types';
+import { useTaskMutation } from '@taskmanager/api';
+
+import { getEmptyTask } from '../../helpers/task';
 
 import { TaskItem } from '../task-item/task-item';
 import { TaskForm } from '../task-form/task-form';
-import { getEmptyTask } from '@taskmanager/board/helpers/task';
 
 type TaskListProps = {
   tasks: Task[];
   isCreating: boolean;
+  onCancel: () => void;
   editingId: Task['id'] | null;
   onEditClick: (id: Task['id'] | null) => void;
 };
@@ -14,13 +17,25 @@ type TaskListProps = {
 function TaskList({
   tasks,
   isCreating,
+  onCancel,
   editingId,
   onEditClick,
 }: TaskListProps) {
+  const addMutation = useTaskMutation('add');
+
+  const handleSubmit = (newTask: Omit<Task, 'id'>) => {
+    addMutation.mutate(newTask);
+  };
+
   return (
     <div className='board__tasks'>
       {isCreating && (
-        <TaskForm task={getEmptyTask()} onSubmit={() => {}} isCreating={true} />
+        <TaskForm
+          task={getEmptyTask()}
+          onSubmit={handleSubmit}
+          onDelete={onCancel}
+          isCreating={true}
+        />
       )}
       {tasks.map((task) => (
         <TaskItem

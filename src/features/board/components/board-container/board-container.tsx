@@ -13,6 +13,7 @@ import { TaskList } from '../task-list/task-list';
 type BoardContainerProps = {
   tasks: Task[];
   isCreating: boolean;
+  onCancel: () => void;
   editingId: Task['id'] | null;
   onEditClick: (id: Task['id'] | null) => void;
   activeFilter: Filter;
@@ -21,6 +22,7 @@ type BoardContainerProps = {
 function BoardContainer({
   tasks,
   isCreating,
+  onCancel,
   editingId,
   onEditClick,
   activeFilter,
@@ -48,12 +50,16 @@ function BoardContainer({
     <section className='board container'>
       <SortingList
         activeSorting={activeSorting}
-        setActiveSorting={setActiveSorting}
+        setActiveSorting={(type: Sorting) => {
+          setActiveSorting(type);
+          onEditClick(null);
+        }}
       />
 
       <TaskList
         tasks={sortedData.slice(0, renderedTaskCount)}
         isCreating={isCreating}
+        onCancel={onCancel}
         editingId={editingId}
         onEditClick={onEditClick}
       />

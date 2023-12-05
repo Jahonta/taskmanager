@@ -34,17 +34,24 @@ function App() {
     setCreating(false);
   };
 
+  const handleFilterChange = (filter: FilterType) => {
+    setActiveFilter(filter);
+    setCreating(false);
+    setEditingId(null);
+  };
+
   return (
     <main className='main'>
       <Control isCreating={isCreating} onAddTaskClick={handleCreating} />
       <Filter
         filteredTasks={filteredTasks}
         activeFilter={activeFilter}
-        setActiveFilter={setActiveFilter}
+        setActiveFilter={handleFilterChange}
       />
       <Board
         tasks={filteredTasks[activeFilter]}
         isCreating={isCreating}
+        onCancel={() => handleCreating(false)}
         editingId={editingId}
         onEditClick={handleEditing}
         activeFilter={activeFilter}
