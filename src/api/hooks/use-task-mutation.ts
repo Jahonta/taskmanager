@@ -7,7 +7,7 @@ import { addTask, deleteTask, updateTask } from '../task-fetchers';
 type Action = 'add' | 'update' | 'delete';
 
 const mutationFn = {
-  add: (task: Omit<Task, 'id'>) => addTask(task),
+  add: (task: Task) => addTask(task),
   update: (task: Task) => updateTask(task),
   delete: (task: Task) => deleteTask(task),
 };

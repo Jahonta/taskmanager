@@ -9,12 +9,16 @@ import { Task, Filters, Filter as FilterType } from '@taskmanager/types';
 import { getFilteredTasks } from './helpers/filter';
 
 function App() {
-  const { data } = useTasks();
+  const { data, isSuccess, isLoading } = useTasks();
   const [editingId, setEditingId] = useState<Task['id'] | null>(null);
   const [isCreating, setCreating] = useState(false);
   const [activeFilter, setActiveFilter] = useState<FilterType>(Filters[0]);
 
-  if (!data) {
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (!isSuccess) {
     return null;
   }
 

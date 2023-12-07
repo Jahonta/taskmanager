@@ -14,21 +14,19 @@ import { formatCardDate } from '../../helpers/format';
 import { ColorsContainer } from '../colors-container/colors-container';
 import { RepeatingContainer } from '../repeating-container/repeating-container';
 
-type SomeTask = Task | Omit<Task, 'id'>;
-
-type TaskFormProps<T> = {
-  task: T;
-  onSubmit: (task: T) => void;
+type TaskFormProps = {
+  task: Task;
+  onSubmit: (task: Task) => void;
   onDelete: () => void;
   isCreating: boolean;
 };
 
-function TaskForm<T extends SomeTask>({
+function TaskForm({
   task,
   onSubmit,
   onDelete,
   isCreating = false,
-}: TaskFormProps<T>) {
+}: TaskFormProps) {
   const [color, setColor] = useState(task.color);
   const [description, setDescription] = useState(task.description);
   const [dueDate, setDueDate] = useState(task.dueDate);

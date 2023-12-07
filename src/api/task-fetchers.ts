@@ -10,7 +10,7 @@ function getTasks(): Promise<Task[]> {
   });
 }
 
-function addTask(task: Omit<Task, 'id'>): Promise<Task> {
+function addTask(task: Task): Promise<Task> {
   return request({ method: 'POST', body: adaptToServer(task) }).then((task) => {
     return adaptToClient(task);
   });

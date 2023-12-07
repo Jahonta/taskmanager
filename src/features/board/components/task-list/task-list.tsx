@@ -23,7 +23,7 @@ function TaskList({
 }: TaskListProps) {
   const addMutation = useTaskMutation('add');
 
-  const handleSubmit = (newTask: Omit<Task, 'id'>) => {
+  const handleSubmit = (newTask: Task) => {
     addMutation.mutate(newTask);
   };
 

@@ -9,6 +9,7 @@ export function getEmptyRepeatingDays() {
 
 export function getEmptyTask() {
   return {
+    id: '',
     color: Colors[0],
     description: '',
     dueDate: null,
