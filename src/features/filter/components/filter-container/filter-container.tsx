@@ -1,31 +1,36 @@
-import { Filter, Task } from '@taskmanager/types';
+import { Filter } from '@taskmanager/types';
+import { useTasks } from '@taskmanager/api';
+import { getFilters } from '@taskmanager/helpers';
+
 import { FilterItem } from '../filter-item/filter-item';
 
 type FilterContainerProps = {
-  filteredTasks: Record<Filter, Task[]>;
   activeFilter: Filter;
   setActiveFilter: (filter: Filter) => void;
 };
 
 function FilterContainer({
-  filteredTasks,
   activeFilter,
   setActiveFilter,
 }: FilterContainerProps) {
+  const { data, isSuccess } = useTasks();
+
+  if (!isSuccess) {
+    return null;
+  }
+
   return (
     <section className='main__filter filter container'>
-      {(Object.entries(filteredTasks) as [Filter, Task[]][]).map(
-        ([name, tasks]) => (
-          <FilterItem
-            key={name}
-            name={name}
-            count={tasks.length}
-            onChange={() => setActiveFilter(name)}
-            checked={activeFilter === name}
-            disabled={tasks.length === 0}
-          />
-        )
-      )}
+      {getFilters(data).map(([name, count]) => (
+        <FilterItem
+          key={name}
+          name={name}
+          count={count}
+          onChange={() => setActiveFilter(name)}
+          checked={activeFilter === name}
+          disabled={count === 0}
+        />
+      ))}
     </section>
   );
 }

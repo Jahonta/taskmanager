@@ -1,28 +1,15 @@
 import { useState } from 'react';
 
-import { useTasks } from '@taskmanager/api';
 import { Board } from '@taskmanager/board';
 import { Control } from '@taskmanager/control';
 import { Filter } from '@taskmanager/filter';
 import { Task, Filters, Filter as FilterType } from '@taskmanager/types';
 
-import { getFilteredTasks } from './helpers/filter';
 
 function App() {
-  const { data, isSuccess, isLoading } = useTasks();
   const [editingId, setEditingId] = useState<Task['id'] | null>(null);
   const [isCreating, setCreating] = useState(false);
   const [activeFilter, setActiveFilter] = useState<FilterType>(Filters[0]);
-
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  if (!isSuccess) {
-    return null;
-  }
-
-  const filteredTasks = getFilteredTasks(data);
 
   const handleCreating = (flag: boolean) => {
     setCreating(flag);
@@ -48,12 +35,10 @@ function App() {
     <main className='main'>
       <Control isCreating={isCreating} onAddTaskClick={handleCreating} />
       <Filter
-        filteredTasks={filteredTasks}
         activeFilter={activeFilter}
         setActiveFilter={handleFilterChange}
       />
       <Board
-        tasks={filteredTasks[activeFilter]}
         isCreating={isCreating}
         onCancel={() => handleCreating(false)}
         editingId={editingId}

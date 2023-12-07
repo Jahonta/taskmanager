@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 
 import { Filter, Task } from '@taskmanager/types';
 import { Button } from '@taskmanager/components';
+import { useTasks } from '@taskmanager/api';
+import { getTasksByFilter } from '@taskmanager/helpers';
 
 import { DEFAULT_SORTING, TASKS_PER_PORTION } from '../../constants';
 import { Sorting } from '../../types/sorting';
@@ -11,7 +13,6 @@ import { SortingList } from '../sorting-list/sorting-list';
 import { TaskList } from '../task-list/task-list';
 
 type BoardContainerProps = {
-  tasks: Task[];
   isCreating: boolean;
   onCancel: () => void;
   editingId: Task['id'] | null;
@@ -20,29 +21,30 @@ type BoardContainerProps = {
 };
 
 function BoardContainer({
-  tasks,
   isCreating,
   onCancel,
   editingId,
   onEditClick,
   activeFilter,
 }: BoardContainerProps) {
+  const { data } = useTasks();
   const [renderedTaskCount, setRenderedTaskCount] = useState(0);
   const [activeSorting, setActiveSorting] = useState<Sorting>(DEFAULT_SORTING);
+  const filteredTasks = getTasksByFilter(activeFilter, data);
 
   useEffect(() => {
     setActiveSorting(DEFAULT_SORTING);
   }, [activeFilter]);
 
   useEffect(() => {
-    setRenderedTaskCount(Math.min(TASKS_PER_PORTION, tasks.length));
-  }, [tasks, activeSorting]);
+    setRenderedTaskCount(Math.min(TASKS_PER_PORTION, filteredTasks.length));
+  }, [filteredTasks, activeSorting]);
 
-  const sortedData = sort[activeSorting](tasks);
+  const sortedData = sort[activeSorting](filteredTasks);
 
   const handleLoadMoreClick = () => {
     setRenderedTaskCount((prevRenderedTaskCount) =>
-      Math.min(prevRenderedTaskCount + TASKS_PER_PORTION, tasks.length)
+      Math.min(prevRenderedTaskCount + TASKS_PER_PORTION, filteredTasks.length)
     );
   };
 
@@ -64,7 +66,7 @@ function BoardContainer({
         onEditClick={onEditClick}
       />
 
-      {tasks.length > renderedTaskCount && (
+      {filteredTasks.length > renderedTaskCount && (
         <Button extraClasses={['load-more']} onClick={handleLoadMoreClick}>
           load more
         </Button>

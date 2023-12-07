@@ -2,9 +2,9 @@ import { Filter, Task } from '@taskmanager/types';
 
 import { isToday, isRepeating, isOverdue } from './task';
 
-export function getFilteredTasks(tasks: Task[]): Record<Filter, Task[]> {
+function getFilteredTasks(tasks: Task[]): Record<Filter, Task[]> {
   return {
-    all: tasks,
+    all: tasks.filter((task) => !task.isArchived),
     overdue: tasks.filter(
       (task) => !task.isArchived && isOverdue(task.dueDate)
     ),
@@ -15,4 +15,14 @@ export function getFilteredTasks(tasks: Task[]): Record<Filter, Task[]> {
     favorites: tasks.filter((task) => !task.isArchived && task.isFavorite),
     archive: tasks.filter((task) => task.isArchived),
   };
+}
+
+export function getFilters(tasks: Task[]): [Filter, number][] {
+  return (Object.entries(getFilteredTasks(tasks)) as [Filter, Task[]][]).map(
+    ([name, tasks]) => [name, tasks.length]
+  );
+}
+
+export function getTasksByFilter(filter: Filter, tasks: Task[] = []) {
+  return getFilteredTasks(tasks)[filter];
 }
