@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { Filter, Task } from '@taskmanager/types';
 import { Button } from '@taskmanager/components';
@@ -30,7 +30,10 @@ function BoardContainer({
   const { data } = useTasks();
   const [renderedTaskCount, setRenderedTaskCount] = useState(0);
   const [activeSorting, setActiveSorting] = useState<Sorting>(DEFAULT_SORTING);
-  const filteredTasks = getTasksByFilter(activeFilter, data);
+  const filteredTasks = useMemo(
+    () => getTasksByFilter(activeFilter, data),
+    [activeFilter, data]
+  );
 
   useEffect(() => {
     setActiveSorting(DEFAULT_SORTING);
