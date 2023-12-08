@@ -1,12 +1,12 @@
 import { MouseEvent } from 'react';
 import cn from 'classnames';
 
-import { SortingType, TSorting } from '../../types/sorting';
+import { SortingType, Sorting } from '../../types/sorting';
 
 type SortingItemProps = {
-  type: TSorting;
+  type: Sorting;
   isActive: boolean;
-  onClick: (type: TSorting) => void;
+  onClick: (type: Sorting) => void;
 };
 
 const sortingLabel = {
