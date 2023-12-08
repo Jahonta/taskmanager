@@ -3,10 +3,11 @@ import { RepeatingDay } from '@taskmanager/types';
 
 type RepeatingItemProps = {
   day: RepeatingDay;
+  checked: boolean;
   onChange: (day: RepeatingDay, isChecked: boolean) => void;
 };
 
-function RepeatingItem({ day, onChange }: RepeatingItemProps) {
+function RepeatingItem({ day, checked, onChange }: RepeatingItemProps) {
   return (
     <LabeledInput
       inputExtraClasses={['card__repeat-day-input']}
@@ -14,6 +15,7 @@ function RepeatingItem({ day, onChange }: RepeatingItemProps) {
       type='checkbox'
       name='repeat'
       value={day}
+      checked={checked}
       onChange={onChange}
     >
       {day}

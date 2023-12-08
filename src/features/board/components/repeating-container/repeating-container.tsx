@@ -21,7 +21,12 @@ function RepeatingContainer({
   return (
     <div className='card__repeat-days-inner'>
       {RepeatingDays.map((day) => (
-        <RepeatingItem key={day} day={day} onChange={handleChange} />
+        <RepeatingItem
+          key={day}
+          day={day}
+          checked={currentRepeatingDays[day]}
+          onChange={handleChange}
+        />
       ))}
     </div>
   );
