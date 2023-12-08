@@ -43,6 +43,10 @@ function TaskForm({
     onClose: setDueDate,
   });
 
+  const isValid =
+    (isRepeating && helperIsRepeating(repeatingDays)) ||
+    (hasDueDate && dueDate);
+
   const handleDueDateToggle = () => {
     if (!hasDueDate) {
       setIsRepeating(false);
@@ -154,7 +158,11 @@ function TaskForm({
           </div>
 
           <div className='card__status-btns'>
-            <Button extraClasses={['card__save']} type='submit'>
+            <Button
+              extraClasses={['card__save']}
+              type='submit'
+              disabled={!isValid}
+            >
               save
             </Button>
             <Button extraClasses={['card__delete']} onClick={onDelete}>

@@ -20,7 +20,7 @@ export function useDatepicker({
     let datepicker: Instance;
     if (dateRef.current && condition) {
       datepicker = flatpickr(dateRef.current, {
-        defaultDate: defaultDate ?? new Date(),
+        defaultDate: defaultDate ?? undefined,
         dateFormat: 'j F',
         onClose: ([newDate]) => {
           onClose(newDate.toISOString());
