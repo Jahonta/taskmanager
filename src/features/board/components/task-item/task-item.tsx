@@ -31,7 +31,9 @@ function TaskItem({ task, editingId, onEditClick }: TaskItemProps) {
   };
 
   const handleUpdate = (updatedTask: Task) => {
-    updateMutation.mutate(updatedTask);
+    updateMutation.mutateAsync(updatedTask).then(() => {
+      onEditClick(null);
+    });
   };
 
   return isEditing ? (
