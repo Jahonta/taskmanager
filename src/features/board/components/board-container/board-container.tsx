@@ -39,11 +39,11 @@ function BoardContainer({
 
   useEffect(() => {
     setActiveSorting(DEFAULT_SORTING);
-  }, [activeFilter]);
+  }, [activeFilter, isCreating]);
 
   useEffect(() => {
-    setRenderedTaskCount(Math.min(TASKS_PER_PORTION, filteredTasks.length));
-  }, [filteredTasks, activeSorting]);
+    setRenderedTaskCount(TASKS_PER_PORTION);
+  }, [activeFilter]);
 
   const sortedData = sort[activeSorting](filteredTasks);
 
