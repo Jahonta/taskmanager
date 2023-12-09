@@ -15,6 +15,7 @@ import { TaskList } from '../task-list/task-list';
 type BoardContainerProps = {
   isCreating: boolean;
   onCancel: () => void;
+  onSuccess: () => void;
   editingId: Task['id'] | null;
   onEditClick: (id: Task['id'] | null) => void;
   activeFilter: Filter;
@@ -23,6 +24,7 @@ type BoardContainerProps = {
 function BoardContainer({
   isCreating,
   onCancel,
+  onSuccess,
   editingId,
   onEditClick,
   activeFilter,
@@ -65,6 +67,7 @@ function BoardContainer({
         tasks={sortedData.slice(0, renderedTaskCount)}
         isCreating={isCreating}
         onCancel={onCancel}
+        onSuccess={onSuccess}
         editingId={editingId}
         onEditClick={onEditClick}
       />

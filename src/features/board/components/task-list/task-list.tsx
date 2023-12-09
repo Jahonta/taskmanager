@@ -12,6 +12,7 @@ type TaskListProps = {
   tasks: Task[];
   isCreating: boolean;
   onCancel: () => void;
+  onSuccess: () => void;
   editingId: Task['id'] | null;
   onEditClick: (id: Task['id'] | null) => void;
 };
@@ -20,6 +21,7 @@ function TaskList({
   tasks,
   isCreating,
   onCancel,
+  onSuccess,
   editingId,
   onEditClick,
 }: TaskListProps) {
@@ -27,9 +29,15 @@ function TaskList({
   const [hasError, setHasError] = useState(false);
 
   const handleSubmit = (newTask: Task) => {
-    addMutation.mutateAsync(newTask).catch(() => {
-      setHasError(true);
-    });
+    addMutation
+      .mutateAsync(newTask)
+      .then(() => {
+        onSuccess();
+        setHasError(false);
+      })
+      .catch(() => {
+        setHasError(true);
+      });
   };
 
   return (

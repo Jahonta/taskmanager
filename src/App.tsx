@@ -5,19 +5,20 @@ import { Control } from '@taskmanager/control';
 import { Filter } from '@taskmanager/filter';
 import { Task, Filters, Filter as FilterType } from '@taskmanager/types';
 
-
 function App() {
   const [editingId, setEditingId] = useState<Task['id'] | null>(null);
   const [isCreating, setCreating] = useState(false);
   const [activeFilter, setActiveFilter] = useState<FilterType>(Filters[0]);
 
-  const handleCreating = (flag: boolean) => {
-    setCreating(flag);
+  const startCreating = () => {
+    setCreating(true);
     setEditingId(null);
+    setActiveFilter(Filters[0]);
+  };
 
-    if (flag) {
-      setActiveFilter(Filters[0]);
-    }
+  const stopCreating = () => {
+    setCreating(false);
+    setEditingId(null);
   };
 
   const handleEditing = (id: Task['id'] | null) => {
@@ -33,14 +34,19 @@ function App() {
 
   return (
     <main className='main'>
-      <Control isCreating={isCreating} onAddTaskClick={handleCreating} />
+      <Control
+        isCreating={isCreating}
+        onAddTaskClick={startCreating}
+        onCancel={stopCreating}
+      />
       <Filter
         activeFilter={activeFilter}
         setActiveFilter={handleFilterChange}
       />
       <Board
         isCreating={isCreating}
-        onCancel={() => handleCreating(false)}
+        onCancel={stopCreating}
+        onSuccess={stopCreating}
         editingId={editingId}
         onEditClick={handleEditing}
         activeFilter={activeFilter}
