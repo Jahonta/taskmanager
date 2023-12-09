@@ -48,6 +48,7 @@ function TaskForm({
   });
 
   const isValid =
+    (description.length && !isRepeating && !hasDueDate) ||
     (isRepeating && helperIsRepeating(repeatingDays)) ||
     (hasDueDate && dueDate);
 
