@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { Task } from '@taskmanager/types';
 import { useKeydown } from '@taskmanager/hooks';
 import { useTaskMutation } from '@taskmanager/api';
@@ -14,6 +16,7 @@ type TaskItemProps = {
 function TaskItem({ task, editingId, onEditClick }: TaskItemProps) {
   const updateMutation = useTaskMutation('update');
   const deleteMutation = useTaskMutation('delete');
+  const [hasError, setHasError] = useState(false);
 
   const isEditing = editingId === task.id;
   useKeydown({
@@ -27,13 +30,21 @@ function TaskItem({ task, editingId, onEditClick }: TaskItemProps) {
   };
 
   const handleDelete = () => {
-    deleteMutation.mutate(task);
+    deleteMutation.mutateAsync(task).catch(() => {
+      setHasError(true);
+    });
   };
 
   const handleUpdate = (updatedTask: Task) => {
-    updateMutation.mutateAsync(updatedTask).then(() => {
-      onEditClick(null);
-    });
+    updateMutation
+      .mutateAsync(updatedTask)
+      .then(() => {
+        onEditClick(null);
+        setHasError(false);
+      })
+      .catch(() => {
+        setHasError(true);
+      });
   };
 
   return isEditing ? (
@@ -42,12 +53,16 @@ function TaskItem({ task, editingId, onEditClick }: TaskItemProps) {
       onSubmit={handleUpdate}
       onDelete={handleDelete}
       isCreating={false}
+      hasError={hasError}
+      dropError={() => setHasError(false)}
     />
   ) : (
     <TaskCard
       task={task}
       onEditClick={handleEditClick}
       onUpdate={handleUpdate}
+      hasError={hasError}
+      dropError={() => setHasError(false)}
     />
   );
 }

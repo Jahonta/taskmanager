@@ -1,4 +1,5 @@
 import cn from 'classnames';
+import 'animate.css';
 
 import { Button } from '@taskmanager/components';
 import { Task } from '@taskmanager/types';
@@ -10,18 +11,37 @@ type TaskCardProps = {
   task: Task;
   onEditClick: () => void;
   onUpdate: (task: Task) => void;
+  hasError: boolean;
+  dropError: () => void;
 };
 
-function TaskCard({ task, onEditClick, onUpdate }: TaskCardProps) {
+function TaskCard({
+  task,
+  onEditClick,
+  onUpdate,
+  hasError,
+  dropError,
+}: TaskCardProps) {
   const { color, description, dueDate, isArchived, isFavorite, repeatingDays } =
     task;
 
   return (
     <article
-      className={cn('card', `card--${color}`, {
-        'card--deadline': isOverdue(dueDate),
-        'card--repeat': isRepeating(repeatingDays),
-      })}
+      onAnimationEnd={() => {
+        dropError();
+      }}
+      className={cn(
+        'card',
+        `card--${color}`,
+        {
+          'card--deadline': isOverdue(dueDate),
+          'card--repeat': isRepeating(repeatingDays),
+        },
+        'animate__animated',
+        {
+          animate__shakeX: hasError,
+        }
+      )}
     >
       <div className='card__form'>
         <div className='card__inner'>

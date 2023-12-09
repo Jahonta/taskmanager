@@ -373,6 +373,12 @@ body {
 .card__save {
   display: none;
 }
+
+.card--edit {
+  position: relative;
+  z-index: 10;
+}
+
 .card--edit .card__inner {
   bottom: auto;
   z-index: 2;

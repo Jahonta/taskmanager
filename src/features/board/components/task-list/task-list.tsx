@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { Task } from '@taskmanager/types';
 import { useTaskMutation } from '@taskmanager/api';
 
@@ -22,9 +24,12 @@ function TaskList({
   onEditClick,
 }: TaskListProps) {
   const addMutation = useTaskMutation('add');
+  const [hasError, setHasError] = useState(false);
 
   const handleSubmit = (newTask: Task) => {
-    addMutation.mutate(newTask);
+    addMutation.mutateAsync(newTask).catch(() => {
+      setHasError(true);
+    });
   };
 
   return (
@@ -35,6 +40,8 @@ function TaskList({
           onSubmit={handleSubmit}
           onDelete={onCancel}
           isCreating={true}
+          hasError={hasError}
+          dropError={() => setHasError(false)}
         />
       )}
       {tasks.map((task) => (

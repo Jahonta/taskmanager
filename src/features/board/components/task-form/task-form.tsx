@@ -19,6 +19,8 @@ type TaskFormProps = {
   onSubmit: (task: Task) => void;
   onDelete: () => void;
   isCreating: boolean;
+  hasError: boolean;
+  dropError: () => void;
 };
 
 function TaskForm({
@@ -26,6 +28,8 @@ function TaskForm({
   onSubmit,
   onDelete,
   isCreating = false,
+  hasError,
+  dropError,
 }: TaskFormProps) {
   const [color, setColor] = useState(task.color);
   const [description, setDescription] = useState(task.description);
@@ -74,9 +78,21 @@ function TaskForm({
 
   return (
     <article
-      className={cn('card', 'card--edit', `card--${color}`, {
-        'card--repeat': isRepeating,
-      })}
+      onAnimationEnd={() => {
+        dropError();
+      }}
+      className={cn(
+        'card',
+        'card--edit',
+        `card--${color}`,
+        {
+          'card--repeat': isRepeating,
+        },
+        'animate__animated',
+        {
+          animate__shakeX: hasError,
+        }
+      )}
     >
       <form
         className='card__form'
