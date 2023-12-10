@@ -30,9 +30,15 @@ function TaskItem({ task, editingId, onEditClick }: TaskItemProps) {
   };
 
   const handleDelete = () => {
-    deleteMutation.mutateAsync(task).catch(() => {
-      setHasError(true);
-    });
+    deleteMutation
+      .mutateAsync(task)
+      .then(() => {
+        onEditClick(null);
+        setHasError(false);
+      })
+      .catch(() => {
+        setHasError(true);
+      });
   };
 
   const handleUpdate = (updatedTask: Task) => {
