@@ -11,6 +11,7 @@ import { sort } from '../../helpers/sorting';
 
 import { SortingList } from '../sorting-list/sorting-list';
 import { TaskList } from '../task-list/task-list';
+import { Message } from '../message/message';
 
 type BoardContainerProps = {
   isCreating: boolean;
@@ -29,7 +30,7 @@ function BoardContainer({
   onEditClick,
   activeFilter,
 }: BoardContainerProps) {
-  const { data } = useTasks();
+  const { data, isLoading, isError } = useTasks();
   const [renderedTaskCount, setRenderedTaskCount] = useState(0);
   const [activeSorting, setActiveSorting] = useState<Sorting>(DEFAULT_SORTING);
   const filteredTasks = useMemo(
@@ -44,6 +45,18 @@ function BoardContainer({
   useEffect(() => {
     setRenderedTaskCount(TASKS_PER_PORTION);
   }, [activeFilter]);
+
+  if (!data && isLoading) {
+    return <Message type='loading' filter={activeFilter} />;
+  }
+
+  if (isError) {
+    return <Message type='error' filter={activeFilter} />;
+  }
+
+  if (!filteredTasks.length && !isCreating) {
+    return <Message type='empty' filter={activeFilter} />;
+  }
 
   const sortedData = sort[activeSorting](filteredTasks);
 
