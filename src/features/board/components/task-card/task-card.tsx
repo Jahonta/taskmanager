@@ -42,6 +42,7 @@ function TaskCard({
           animate__shakeX: hasError,
         }
       )}
+      data-testid="task-card"
     >
       <div className='card__form'>
         <div className='card__inner'>
