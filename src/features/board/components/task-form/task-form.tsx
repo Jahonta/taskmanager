@@ -3,13 +3,11 @@ import cn from 'classnames';
 
 import { Task } from '@taskmanager/types';
 import { Button } from '@taskmanager/components';
-import {
-  getEmptyRepeatingDays,
-  isRepeating as helperIsRepeating,
-} from '@taskmanager/helpers';
+import { isRepeating as helperIsRepeating } from '@taskmanager/helpers';
 import { useDatepicker } from '@taskmanager/hooks';
 
 import { formatCardDate } from '../../helpers/format';
+import { getEmptyRepeatingDays } from '../../helpers/task';
 
 import { ColorsContainer } from '../colors-container/colors-container';
 import { RepeatingContainer } from '../repeating-container/repeating-container';
