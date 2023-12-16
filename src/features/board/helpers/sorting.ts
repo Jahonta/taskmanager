@@ -17,7 +17,7 @@ const getNullDateSorting = (a: Task, b: Task) => {
 export const sort = {
   [SortingType.DEFAULT]: (tasks: Task[]) => [...tasks],
   [SortingType.DATE_DOWN]: (tasks: Task[]) => {
-    return tasks.toSorted((a, b) => {
+    return tasks.slice().sort((a, b) => {
       if (a.dueDate && b.dueDate) {
         return new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime();
       }
@@ -26,7 +26,7 @@ export const sort = {
     });
   },
   [SortingType.DATE_UP]: (tasks: Task[]) => {
-    return tasks.toSorted((a, b) => {
+    return tasks.slice().sort((a, b) => {
       if (a.dueDate && b.dueDate) {
         return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
       }
