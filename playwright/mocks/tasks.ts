@@ -71,7 +71,7 @@ export const mockTasks = [
     id: 'task-5',
     color: 'pink',
     description: 'Task 5',
-    due_date: '2023-12-20T21:00:04.596Z',
+    due_date: new Date(Date.now() + 10000).toISOString(),
     is_archived: false,
     is_favorite: false,
     repeating_days: {
@@ -104,7 +104,7 @@ export const mockTasks = [
   {
     id: 'task-7',
     color: 'blue',
-    description: 'Task-7',
+    description: 'Task 7',
     due_date: '2028-12-20T21:00:04.596Z',
     is_archived: false,
     is_favorite: false,
@@ -121,7 +121,7 @@ export const mockTasks = [
   {
     id: 'task-8',
     color: 'yellow',
-    description: 'Task-8',
+    description: 'Task 8',
     due_date: '2023-12-22T21:00:04.596Z',
     is_archived: false,
     is_favorite: false,
