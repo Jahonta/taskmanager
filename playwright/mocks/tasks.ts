@@ -122,7 +122,7 @@ export const mockTasks = [
     id: 'task-8',
     color: 'yellow',
     description: 'Task 8',
-    due_date: '2023-12-22T21:00:04.596Z',
+    due_date: '2023-12-21T21:00:04.596Z',
     is_archived: false,
     is_favorite: false,
     repeating_days: {

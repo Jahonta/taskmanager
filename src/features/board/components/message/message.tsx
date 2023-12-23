@@ -16,7 +16,7 @@ const emptyFilterText: Record<Filter, string> = {
   today: 'There are no tasks today',
   favorites: 'There are no favorite tasks now',
   repeating: 'There are no repeating tasks now',
-  archive: 'There are no archive tasks now',
+  archive: 'There are no archived tasks now',
 };
 
 function Message({ type, filter }: MessageProps) {

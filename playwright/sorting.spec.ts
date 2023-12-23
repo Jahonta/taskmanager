@@ -64,7 +64,24 @@ test.describe('Sorting', () => {
   }) => {
     const sortingElement = page.getByText('SORT BY DATE down');
     await sortingElement.click();
+
+    await expect(sortingElement).toHaveClass(/board__sort-item--active/);
+
     await page.getByRole('button', { name: 'ADD NEW TASK' }).click();
+
+    await expect(sortingElement).not.toHaveClass(/board__sort-item--active/);
+    await expect(page.getByText('SORT BY DEFAULT')).toHaveClass(
+      /board__sort-item--active/
+    );
+  });
+
+  test('sorting is dropped if filter was changed', async ({ page }) => {
+    const sortingElement = page.getByText('SORT BY DATE down');
+    await sortingElement.click();
+
+    await expect(sortingElement).toHaveClass(/board__sort-item--active/);
+
+    await page.getByText('repeating 2').click();
 
     await expect(sortingElement).not.toHaveClass(/board__sort-item--active/);
     await expect(page.getByText('SORT BY DEFAULT')).toHaveClass(
