@@ -47,7 +47,7 @@ test.describe('View tasks', () => {
 
     await loadMoreButton.click();
 
-    await expect(loadMoreButton).not.toBeAttached();
+    await expect(loadMoreButton).not.toBeVisible();
 
     await page.getByText('Repeating').click();
     await page.getByText('All').click();
@@ -75,9 +75,9 @@ test.describe('View empty tasks', () => {
   });
 
   test('the message is shown if there are no tasks', async ({ page }) => {
-    await expect(page.getByText('SORT BY DEFAULT')).not.toBeAttached();
-    await expect(page.getByTestId('task-card')).not.toBeAttached();
-    await expect(page.getByText('load more')).not.toBeAttached();
+    await expect(page.getByText('SORT BY DEFAULT')).not.toBeVisible();
+    await expect(page.getByTestId('task-card')).not.toBeVisible();
+    await expect(page.getByText('load more')).not.toBeVisible();
     await expect(
       page.getByText('Click «ADD NEW TASK» in menu to create your first task')
     ).toBeVisible();
@@ -93,6 +93,6 @@ test.describe('View empty tasks', () => {
     await expect(messageElement).toBeVisible();
 
     await page.getByRole('button', { name: 'ADD NEW TASK' }).click();
-    await expect(messageElement).not.toBeAttached();
+    await expect(messageElement).not.toBeVisible();
   });
 });
