@@ -1,16 +1,6 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
-import { mockTasks } from './mocks/tasks';
-
-async function mockAPI(page: Page, isEmpty: boolean = false) {
-  const tasks = isEmpty ? [] : mockTasks;
-  await page.route('*/**/task-manager/tasks', async (route) => {
-    if (route.request().method() === 'GET') {
-      await route.fulfill({ json: tasks });
-      return;
-    }
-  });
-}
+import { mockAPI } from './mocks/api';
 
 test.describe('View tasks', () => {
   test.beforeEach(async ({ page }) => {

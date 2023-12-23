@@ -1,16 +1,6 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
-import { mockTasks } from './mocks/tasks';
-
-async function mockAPI(page: Page, isEmpty: boolean = false) {
-  const tasks = isEmpty ? [] : mockTasks;
-  await page.route('*/**/task-manager/tasks', async (route) => {
-    if (route.request().method() === 'GET') {
-      await route.fulfill({ json: tasks });
-      return;
-    }
-  });
-}
+import { mockAPI } from './mocks/api';
 
 test.describe('Sorting', () => {
   test.beforeEach(async ({ page }) => {
@@ -49,8 +39,8 @@ test.describe('Sorting', () => {
     );
     const taskElements = page.getByTestId('task-card');
     await expect(taskElements.nth(0)).toHaveText(/Task 6/);
-    await expect(taskElements.nth(1)).toHaveText(/Task 5/);
-    await expect(taskElements.nth(2)).toHaveText(/Task 8/);
+    await expect(taskElements.nth(1)).toHaveText(/Task 8/);
+    await expect(taskElements.nth(2)).toHaveText(/Task 5/);
     await expect(taskElements.nth(3)).toHaveText(/Task 7/);
   });
 
@@ -64,8 +54,8 @@ test.describe('Sorting', () => {
     );
     const taskElements = page.getByTestId('task-card');
     await expect(taskElements.nth(0)).toHaveText(/Task 7/);
-    await expect(taskElements.nth(1)).toHaveText(/Task 8/);
-    await expect(taskElements.nth(2)).toHaveText(/Task 5/);
+    await expect(taskElements.nth(1)).toHaveText(/Task 5/);
+    await expect(taskElements.nth(2)).toHaveText(/Task 8/);
     await expect(taskElements.nth(3)).toHaveText(/Task 6/);
   });
 
