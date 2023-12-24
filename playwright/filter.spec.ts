@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 import { mockAPI } from './mocks/api';
+import { deleteCards } from './helpers/card';
 
 test.describe('Filter', () => {
   test.beforeEach(async ({ page }) => {
@@ -86,6 +87,63 @@ test.describe('Filter', () => {
     await page.getByText('SORT BY DATE down').click();
 
     await expect(page.getByLabel('all 9')).not.toBeChecked;
+  });
+
+  test('message is shown if there are no archive tasks', async ({ page }) => {
+    await page.getByText('archive 1').click();
+    await deleteCards(page);
+
+    await expect(
+      page.getByText('There are no archived tasks now')
+    ).toBeVisible();
+    await expect(page.getByLabel('archive 0')).toBeDisabled();
+  });
+
+  test('message is shown if there are no favorite tasks', async ({ page }) => {
+    await page.getByText('favorites 1').click();
+    await deleteCards(page);
+
+    await expect(
+      page.getByText('There are no favorite tasks now')
+    ).toBeVisible();
+    await expect(page.getByLabel('favorites 0')).toBeDisabled();
+  });
+
+  test('message is shown if there are no repeating tasks', async ({ page }) => {
+    await page.getByText('repeating 2').click();
+    await deleteCards(page);
+
+    await expect(
+      page.getByText('There are no repeating tasks now')
+    ).toBeVisible();
+    await expect(page.getByLabel('repeating 0')).toBeDisabled();
+  });
+
+  test('message is shown if there are no today tasks', async ({ page }) => {
+    await page.getByText('today 1').click();
+    await deleteCards(page);
+
+    await expect(page.getByText('There are no tasks today')).toBeVisible();
+    await expect(page.getByLabel('today 0')).toBeDisabled();
+  });
+
+  test('message is shown if there are no overdue tasks', async ({ page }) => {
+    await page.getByText('overdue 2').click();
+    await deleteCards(page);
+
+    await expect(
+      page.getByText('There are no overdue tasks now')
+    ).toBeVisible();
+    await expect(page.getByLabel('overdue 0')).toBeDisabled();
+  });
+
+  test('message is shown if there are no tasks', async ({ page }) => {
+    await deleteCards(page);
+
+    await expect(
+      page.getByText('Click «ADD NEW TASK» in menu to create your first task')
+    ).toBeVisible();
+    await expect(page.getByLabel('all 0')).toBeDisabled();
   });
 });
 

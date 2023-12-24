@@ -1,3 +1,5 @@
+import { getEndOfToday } from '../helpers/mock';
+
 export const mockTasks = [
   {
     id: 'task-1',
@@ -71,7 +73,7 @@ export const mockTasks = [
     id: 'task-5',
     color: 'pink',
     description: 'Task 5',
-    due_date: new Date(Date.now() + 10000).toISOString(),
+    due_date: getEndOfToday().toISOString(),
     is_archived: false,
     is_favorite: false,
     repeating_days: {
