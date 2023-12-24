@@ -4,7 +4,7 @@ import { mockAPI } from './mocks/api';
 
 test.describe('View tasks', () => {
   test.beforeEach(async ({ page }) => {
-    mockAPI(page);
+    await mockAPI(page);
     await page.goto('http://localhost:5173/');
   });
 
@@ -70,7 +70,7 @@ test.describe('View tasks', () => {
 
 test.describe('View empty tasks', () => {
   test.beforeEach(async ({ page }) => {
-    mockAPI(page, true);
+    await mockAPI(page, true);
     await page.goto('http://localhost:5173/');
   });
 

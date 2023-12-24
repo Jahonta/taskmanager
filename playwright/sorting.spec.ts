@@ -4,7 +4,7 @@ import { mockAPI } from './mocks/api';
 
 test.describe('Sorting', () => {
   test.beforeEach(async ({ page }) => {
-    mockAPI(page);
+    await mockAPI(page);
     await page.goto('http://localhost:5173/');
   });
 

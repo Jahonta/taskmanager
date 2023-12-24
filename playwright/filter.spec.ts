@@ -5,7 +5,7 @@ import { deleteCards } from './helpers/card';
 
 test.describe('Filter', () => {
   test.beforeEach(async ({ page }) => {
-    mockAPI(page);
+    await mockAPI(page);
     await page.goto('http://localhost:5173/');
   });
 
@@ -149,7 +149,7 @@ test.describe('Filter', () => {
 
 test.describe('Filter empty tasks', () => {
   test.beforeEach(async ({ page }) => {
-    mockAPI(page, true);
+    await mockAPI(page, true);
     await page.goto('http://localhost:5173/');
   });
 
