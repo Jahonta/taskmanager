@@ -92,6 +92,7 @@ function TaskForm({
           animate__shakeX: hasError,
         }
       )}
+      data-testid='task-form'
     >
       <form
         className='card__form'
