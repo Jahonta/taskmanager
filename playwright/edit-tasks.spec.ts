@@ -62,14 +62,57 @@ test.describe('Edit tasks', () => {
   test("shown tasks count isn't dropped if task is being edited", async ({
     page,
   }) => {
+    const firstTaskCard = await page.getByTestId('task-card').first();
     await page.getByText('load more').click();
-    await page
-      .getByTestId('task-card')
-      .first()
-      .getByRole('button', { name: 'edit' })
+    firstTaskCard
+      .getByRole('button', {
+        name: 'favorites',
+      })
       .click();
+    await firstTaskCard.getByRole('button', { name: 'edit' }).click();
 
     await expect(await page.getByTestId('task-form')).toHaveCount(1);
     await expect(page.getByTestId('task-card')).toHaveCount(8);
+  });
+
+  test('task is added and removed from favorites when favorites button is clicked', async ({
+    page,
+  }) => {
+    const firstTaskCard = await page.getByTestId('task-card').first();
+    const favoritesButton = await firstTaskCard.getByRole('button', {
+      name: 'favorites',
+    });
+
+    await favoritesButton.click();
+    await expect(favoritesButton).toHaveClass(/card__btn--disabled/);
+
+    await page.getByText('favorites 2').click();
+    await expect(firstTaskCard).toHaveText(/Task 1/);
+
+    await favoritesButton.click();
+    await page.getByText('all 9').click();
+    await expect(firstTaskCard).toHaveText(/Task 1/);
+    await expect(favoritesButton).not.toHaveClass(/card__btn--disabled/);
+  });
+
+  test('task is added and removed from archive when archive button is clicked', async ({
+    page,
+  }) => {
+    const firstTaskCard = await page.getByTestId('task-card').first();
+    const archiveButton = await firstTaskCard.getByRole('button', {
+      name: 'archive',
+    });
+
+    await archiveButton.click();
+    await expect(firstTaskCard).not.toHaveText(/Task 1/);
+
+    await page.getByText('archive 2').click();
+    await expect(firstTaskCard).toHaveText(/Task 1/);
+    await expect(archiveButton).toHaveClass(/card__btn--disabled/);
+
+    await archiveButton.click();
+    await page.getByText('all 9').click();
+    await expect(firstTaskCard).toHaveText(/Task 1/);
+    await expect(archiveButton).not.toHaveClass(/card__btn--disabled/);
   });
 });
