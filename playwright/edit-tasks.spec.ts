@@ -9,11 +9,11 @@ test.describe('Edit tasks', () => {
   });
 
   test('edit form is shown when edit button is clicked', async ({ page }) => {
-    const firstTaskCard = await page.getByTestId('task-card').first();
+    const firstTaskCard = page.getByTestId('task-card').first();
 
     await firstTaskCard.getByRole('button', { name: 'edit' }).click();
 
-    const taskform = await page.getByTestId('task-form');
+    const taskform = page.getByTestId('task-form');
     await expect(taskform).toBeVisible();
     await expect(taskform).toHaveText(/Task 1/);
     await expect(firstTaskCard).not.toHaveText(/Task 1/);
@@ -31,7 +31,7 @@ test.describe('Edit tasks', () => {
       .getByRole('button', { name: 'edit' })
       .click();
 
-    const taskForm = await page.getByTestId('task-form');
+    const taskForm = page.getByTestId('task-form');
     await expect(taskForm).toHaveCount(1);
     await expect(taskForm).toHaveText(/Task 9/);
   });
@@ -44,7 +44,7 @@ test.describe('Edit tasks', () => {
       .click();
     await page.keyboard.press('Escape');
 
-    await expect(await page.getByTestId('task-form')).not.toBeVisible();
+    await expect(page.getByTestId('task-form')).not.toBeVisible();
   });
 
   test('edit form is hidden when Add new task button is clicked', async ({
@@ -56,13 +56,13 @@ test.describe('Edit tasks', () => {
     await page.getByRole('button', { name: 'ADD NEW TASK' }).click();
 
     await expect(firstTaskCard).toHaveText(/Task 1/);
-    await expect(await page.getByTestId('task-form')).not.toHaveText(/Task 1/);
+    await expect(page.getByTestId('task-form')).not.toHaveText(/Task 1/);
   });
 
   test("shown tasks count isn't dropped if task is being edited", async ({
     page,
   }) => {
-    const firstTaskCard = await page.getByTestId('task-card').first();
+    const firstTaskCard = page.getByTestId('task-card').first();
     await page.getByText('load more').click();
     firstTaskCard
       .getByRole('button', {
@@ -71,14 +71,14 @@ test.describe('Edit tasks', () => {
       .click();
     await firstTaskCard.getByRole('button', { name: 'edit' }).click();
 
-    await expect(await page.getByTestId('task-form')).toHaveCount(1);
+    await expect(page.getByTestId('task-form')).toHaveCount(1);
     await expect(page.getByTestId('task-card')).toHaveCount(8);
   });
 
   test('task is added and removed from favorites when favorites button is clicked', async ({
     page,
   }) => {
-    const firstTaskCard = await page.getByTestId('task-card').first();
+    const firstTaskCard = page.getByTestId('task-card').first();
     const favoritesButton = await firstTaskCard.getByRole('button', {
       name: 'favorites',
     });
@@ -98,7 +98,7 @@ test.describe('Edit tasks', () => {
   test('task is added and removed from archive when archive button is clicked', async ({
     page,
   }) => {
-    const firstTaskCard = await page.getByTestId('task-card').first();
+    const firstTaskCard = page.getByTestId('task-card').first();
     const archiveButton = await firstTaskCard.getByRole('button', {
       name: 'archive',
     });
@@ -117,14 +117,14 @@ test.describe('Edit tasks', () => {
   });
 
   test('task can be edited via form', async ({ page }) => {
-    const firstTaskCard = await page.getByTestId('task-card').first();
+    const firstTaskCard = page.getByTestId('task-card').first();
     await firstTaskCard
       .getByRole('button', {
         name: 'edit',
       })
       .click();
 
-    const editForm = await page.getByTestId('task-form');
+    const editForm = page.getByTestId('task-form');
 
     await editForm
       .getByPlaceholder('Start typing your text here...')
@@ -148,14 +148,14 @@ test.describe('Edit tasks', () => {
   });
 
   test("task can't be submitted with invalid data", async ({ page }) => {
-    const firstTaskCard = await page.getByTestId('task-card').first();
+    const firstTaskCard = page.getByTestId('task-card').first();
     await firstTaskCard
       .getByRole('button', {
         name: 'edit',
       })
       .click();
 
-    const editForm = await page.getByTestId('task-form');
+    const editForm = page.getByTestId('task-form');
     const saveButton = editForm.getByRole('button', { name: 'save' });
     const textarea = editForm.getByPlaceholder(
       'Start typing your text here...'
@@ -178,14 +178,14 @@ test.describe('Edit tasks', () => {
   });
 
   test("data isn't changed if editing was canceled", async ({ page }) => {
-    const firstTaskCard = await page.getByTestId('task-card').first();
+    const firstTaskCard = page.getByTestId('task-card').first();
     const editButton = await firstTaskCard.getByRole('button', {
       name: 'edit',
     });
 
     await editButton.click();
 
-    const editForm = await page.getByTestId('task-form');
+    const editForm = page.getByTestId('task-form');
     const repeatingButton = editForm.getByRole('button', {
       name: 'repeat: no',
     });
