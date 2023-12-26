@@ -115,4 +115,105 @@ test.describe('Edit tasks', () => {
     await expect(firstTaskCard).toHaveText(/Task 1/);
     await expect(archiveButton).not.toHaveClass(/card__btn--disabled/);
   });
+
+  test('task can be edited via form', async ({ page }) => {
+    const firstTaskCard = await page.getByTestId('task-card').first();
+    await firstTaskCard
+      .getByRole('button', {
+        name: 'edit',
+      })
+      .click();
+
+    const editForm = await page.getByTestId('task-form');
+
+    await editForm
+      .getByPlaceholder('Start typing your text here...')
+      .fill('Task 1 edited');
+    await editForm.getByRole('button', { name: 'repeat: no' }).click();
+    await editForm.getByText('we').click();
+    await editForm
+      .locator('div')
+      .filter({ hasText: /^Color$/ })
+      .locator('label')
+      .nth(2)
+      .click();
+    await editForm.getByRole('button', { name: 'save' }).click();
+
+    await expect(firstTaskCard).toHaveText(/Task 1 edited/);
+    await expect(firstTaskCard).toHaveClass(/card--repeat/);
+    await expect(firstTaskCard).toHaveClass(/card--blue/);
+
+    await page.getByText('repeating 3').click();
+    await expect(firstTaskCard).toHaveText(/Task 1 edited/);
+  });
+
+  test("task can't be submitted with invalid data", async ({ page }) => {
+    const firstTaskCard = await page.getByTestId('task-card').first();
+    await firstTaskCard
+      .getByRole('button', {
+        name: 'edit',
+      })
+      .click();
+
+    const editForm = await page.getByTestId('task-form');
+    const saveButton = editForm.getByRole('button', { name: 'save' });
+    const textarea = editForm.getByPlaceholder(
+      'Start typing your text here...'
+    );
+
+    await textarea.fill('');
+    await expect(saveButton).toBeDisabled();
+    await textarea.fill('test');
+    await expect(saveButton).not.toBeDisabled();
+
+    await editForm.getByRole('button', { name: 'repeat: no' }).click();
+    await expect(saveButton).toBeDisabled();
+    await editForm.getByRole('button', { name: 'repeat: yes' }).click();
+    await expect(saveButton).not.toBeDisabled();
+
+    await editForm.getByRole('button', { name: 'date: no' }).click();
+    await expect(saveButton).toBeDisabled();
+    await editForm.getByRole('button', { name: 'date: yes' }).click();
+    await expect(saveButton).not.toBeDisabled();
+  });
+
+  test("data isn't changed if editing was canceled", async ({ page }) => {
+    const firstTaskCard = await page.getByTestId('task-card').first();
+    const editButton = await firstTaskCard.getByRole('button', {
+      name: 'edit',
+    });
+
+    await editButton.click();
+
+    const editForm = await page.getByTestId('task-form');
+    const repeatingButton = editForm.getByRole('button', {
+      name: 'repeat: no',
+    });
+
+    await editForm
+      .getByPlaceholder('Start typing your text here...')
+      .fill('Task 1 edited');
+    await repeatingButton.click();
+    await editForm.getByText('we').click();
+    await editForm
+      .locator('div')
+      .filter({ hasText: /^Color$/ })
+      .locator('label')
+      .nth(2)
+      .click();
+    await page.keyboard.press('Escape');
+
+    await expect(firstTaskCard).toHaveText(/Task 1/);
+    await expect(firstTaskCard).not.toHaveClass(/card--repeat/);
+    await expect(firstTaskCard).not.toHaveClass(/card--blue/);
+    await expect(firstTaskCard).toHaveClass(/card--yellow/);
+
+    await editButton.click();
+
+    await expect(editForm).not.toHaveText(/Task 1 edited/);
+    await expect(repeatingButton).toBeVisible();
+    await expect(editForm).not.toHaveClass(/card--repeat/);
+    await expect(editForm).not.toHaveClass(/card--blue/);
+    await expect(editForm).toHaveClass(/card--yellow/);
+  });
 });
